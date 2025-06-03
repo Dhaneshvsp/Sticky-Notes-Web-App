@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+     
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins,'sans-serif';
+        }
+        
+        .container {
+            margin-right: 3rem;
+            margin-left: 8rem;
+            margin-top: 3rem;
+            min-height: 100vh;
+        }
+
+        body {
+            background-color: #0d243d;
+        }
+        .container>.main>.content>h1>img{
+            height: 6rem;
+            width: 6rem;
+        }
+        h1 {
+            color: white;
+            display: flex;
+            align-items: center;
+            z-index: 6;
+            font-size: 3rem;
+        }
+
+        .container #btn {
+            color: #FFE5B4;
+            margin-top: 1rem;
+            border-radius: 1.5rem;
+            font-weight: bolder;
+            width: 11rem;
+            height: 3rem;
+            background-image: url(linear_gradient.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            border: 3px solid black;
+            font-size: 1.3rem;
+        }
+
+        .container #btn:hover {
+            cursor: pointer;
+            color: aliceblue;
+            box-shadow: 0 0 3rem white;
+        }
+
+        .note-container {
+        height: 15rem;
+        position: relative;
+        width: 30rem;
+        margin-top: 3rem;
+        padding-bottom: 2rem;
+        }
+
+        .notes {
+            height: 15rem;
+            width: 100%;
+            padding: 0.25rem;
+            border-radius: 10px;
+            background-color: white;
+            overflow: auto;
+            outline: 0;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .notes:hover {
+            box-shadow: 0 0 3rem white;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .notes:focus {
+            box-shadow: 0 0 3rem orange;
+        }
+
+        .delete-img {
+            height: 35px;
+            width: 35px;
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            cursor: pointer;
+            mix-blend-mode: multiply;
+        }
+
+        .main {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .content {
+            flex-basis: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main">
+            <div class="content">
+                <h1 class="item">
+                    <img src="notes_pic.png" alt="notes image"> Notes</h1>
+                <button id="btn">Create Notes</button>
+                <div class="notes-container">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let i = 0;
+        let btn = document.getElementById('btn');
+        let notesContainer = document.querySelector('.notes-container');
+
+        function showNotes() {
+            let savedNotes = localStorage.getItem('notes');
+            if (savedNotes) {
+                notesContainer.innerHTML = savedNotes;
+                reapplyListeners();
+            }
+        }
+
+        btn.addEventListener('click', () => {
+            let noteDiv = document.createElement('div');
+            noteDiv.className = 'note-container';
+            noteDiv.setAttribute('id', i++);
+
+            let notes = document.createElement('p');
+            notes.className = 'notes';
+            notes.setAttribute('contenteditable', 'true');
+            notes.setAttribute('tabindex', '0');
+    
+            let image = document.createElement('img');
+            image.setAttribute('src', 'dustbin.png');
+            image.setAttribute('title','Click to delete');
+            image.className = 'delete-img';
+            
+            noteDiv.appendChild(notes);
+            noteDiv.appendChild(image);
+            notesContainer.appendChild(noteDiv);
+            reapplyListeners();
+            updateStorage();
+        });
+
+        function updateStorage() {
+            localStorage.setItem('notes', notesContainer.innerHTML);
+        }
+
+        function reapplyListeners() {
+            document.querySelectorAll('.delete-img').forEach((img) => {
+                img.addEventListener('click', (e) => {
+                    e.target.parentElement.remove();
+                    updateStorage();
+                });
+            });
+
+            document.querySelectorAll('.notes').forEach(note => {
+                note.addEventListener('keyup', () => {
+                    updateStorage();
+                });
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key == 'Enter') {
+                document.execCommand('insertLineBreak');
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', showNotes);
+
+    </script>
+    
+</body>
+</html>
