@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,15 +7,18 @@
     <link rel="icon" href="/notes_pic.png" type="image/x-icon">
     
     <style>
+        /* Google Fonts import for Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
      
+        /* Reset margins, paddings, and apply font globally */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Poppins,'sans-serif';
+            font-family: Poppins, 'sans-serif';
         }
         
+        /* Main container spacing */
         .container {
             margin-right: 3rem;
             margin-left: 8rem;
@@ -23,13 +26,18 @@
             min-height: 100vh;
         }
 
+        /* Background color for the whole page */
         body {
             background-color: #0d243d;
         }
+
+        /* Notes icon sizing inside the heading */
         .container>.main>.content>h1>img{
             height: 6rem;
             width: 6rem;
         }
+
+        /* Main title style */
         h1 {
             color: white;
             display: flex;
@@ -38,6 +46,7 @@
             font-size: 3rem;
         }
 
+        /* "Create Notes" button styling */
         .container #btn {
             color: #FFE5B4;
             margin-top: 1rem;
@@ -52,20 +61,23 @@
             font-size: 1.3rem;
         }
 
+        /* Hover effect for the button */
         .container #btn:hover {
             cursor: pointer;
             color: aliceblue;
             box-shadow: 0 0 3rem white;
         }
 
+        /* Container for each note */
         .note-container {
-        height: 15rem;
-        position: relative;
-        width: 30rem;
-        margin-top: 3rem;
-        padding-bottom: 2rem;
+            height: 15rem;
+            position: relative;
+            width: 30rem;
+            margin-top: 3rem;
+            padding-bottom: 2rem;
         }
 
+        /* Editable note area */
         .notes {
             height: 15rem;
             width: 100%;
@@ -78,15 +90,18 @@
             margin-bottom: 1rem;
         }
 
+        /* Hover effect for notes */
         .notes:hover {
             box-shadow: 0 0 3rem white;
             background-color: rgba(255, 255, 255, 0.9);
         }
 
+        /* Focus effect for notes when editing */
         .notes:focus {
             box-shadow: 0 0 3rem orange;
         }
 
+        /* Trash/delete icon */
         .delete-img {
             height: 35px;
             width: 35px;
@@ -94,14 +109,16 @@
             bottom: 10px;
             right: 20px;
             cursor: pointer;
-            mix-blend-mode: multiply;
+            mix-blend-mode: multiply; /* Avoids solid background on PNG */
         }
 
+        /* Main layout */
         .main {
             display: flex;
             justify-content: flex-start;
         }
 
+        /* Content section sizing */
         .content {
             flex-basis: 50%;
         }
@@ -111,56 +128,74 @@
     <div class="container">
         <div class="main">
             <div class="content">
+                <!-- Title with notes icon -->
                 <h1 class="item">
-                    <img src="notes_pic.png" alt="notes image"> Notes</h1>
+                    <img src="notes_pic.png" alt="notes image"> Notes
+                </h1>
+                <!-- Button to create a new note -->
                 <button id="btn">Create Notes</button>
-                <div class="notes-container">
-                    
-                </div>
+                <!-- Container to hold all notes -->
+                <div class="notes-container"></div>
             </div>
         </div>
     </div>
 
     <script>
+        // Note counter to give each note a unique ID
         let i = 0;
+
+        // Get button and container references
         let btn = document.getElementById('btn');
         let notesContainer = document.querySelector('.notes-container');
 
+        // Function to load notes from localStorage on page load
         function showNotes() {
             let savedNotes = localStorage.getItem('notes');
             if (savedNotes) {
                 notesContainer.innerHTML = savedNotes;
-                reapplyListeners();
+                reapplyListeners(); // Reconnect events for delete/edit
             }
         }
 
+        // Event: Click on "Create Notes"
         btn.addEventListener('click', () => {
+            // Create main note container
             let noteDiv = document.createElement('div');
             noteDiv.className = 'note-container';
             noteDiv.setAttribute('id', i++);
 
+            // Create editable note area
             let notes = document.createElement('p');
             notes.className = 'notes';
             notes.setAttribute('contenteditable', 'true');
             notes.setAttribute('tabindex', '0');
     
+            // Create delete icon
             let image = document.createElement('img');
             image.setAttribute('src', 'dustbin.png');
             image.setAttribute('title','Click to delete');
             image.className = 'delete-img';
             
+            // Append note and delete icon to container
             noteDiv.appendChild(notes);
             noteDiv.appendChild(image);
             notesContainer.appendChild(noteDiv);
+
+            // Make sure new note has event listeners
             reapplyListeners();
+
+            // Save current state to localStorage
             updateStorage();
         });
 
+        // Save notes HTML to localStorage
         function updateStorage() {
             localStorage.setItem('notes', notesContainer.innerHTML);
         }
 
+        // Attach delete and keyup listeners to existing notes
         function reapplyListeners() {
+            // Delete note when trash icon is clicked
             document.querySelectorAll('.delete-img').forEach((img) => {
                 img.addEventListener('click', (e) => {
                     e.target.parentElement.remove();
@@ -168,6 +203,7 @@
                 });
             });
 
+            // Save note content on every key press
             document.querySelectorAll('.notes').forEach(note => {
                 note.addEventListener('keyup', () => {
                     updateStorage();
@@ -175,6 +211,7 @@
             });
         }
 
+        // Make Enter key insert line break instead of creating new element
         document.addEventListener('keydown', (e) => {
             if (e.key == 'Enter') {
                 document.execCommand('insertLineBreak');
@@ -182,6 +219,7 @@
             }
         });
 
+        // Load notes on first page load
         document.addEventListener('DOMContentLoaded', showNotes);
 
     </script>
