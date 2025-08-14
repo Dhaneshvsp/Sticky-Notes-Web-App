@@ -33,7 +33,7 @@ No installation or build steps are needed to run this project.
 
 1.  **Clone the repository**
     ```bash
-    git clone [https://github.com/Dhaneshvsp/Sticky-Notes-Web-App.git](https://github.com/Dhaneshvsp/Sticky-Notes-Web-App.git)
+    git clone https://github.com/Dhaneshvsp/Sticky-Notes-Web-App.git
     ```
 2.  **Navigate to the directory**
     ```bash
