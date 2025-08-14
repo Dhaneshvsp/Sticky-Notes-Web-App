@@ -17,7 +17,7 @@ A lightweight, browser-based sticky notes application—no backend required! Cre
 
 ## 📸 Quick Preview
 
-![App Screenshot](https://raw.githubusercontent.com/Dhaneshvsp/Sticky-Notes-Web-App/main/assests/Screenshot%202025-08-13%20182003.png)
+![App Screenshot](https://raw.githubusercontent.com/Dhaneshvsp/Sticky-Notes-Web-App/main/public/Screenshot%202025-08-13%20182003.png)
 
 ---
 
